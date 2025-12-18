@@ -29,11 +29,11 @@ services:
       SERVER_IP: 0.0.0.0
       SERVER_PORT: 8000
       HOST_FND: http://localhost:8000
-      HOST_SYU: http://localhost:8081
-      HOST_TYA: http://localhost:8082
-      HOST_TPP: http://localhost:8083
-      HOST_PT:  http://localhost:8084
-      HOST_RYE: http://localhost:8085
+      HOST_SYU: http://localhost:8080
+      HOST_TYA: http://localhost:8081
+      HOST_TPP: http://localhost:8082
+      HOST_PT:  http://localhost:8083
+      HOST_RYE: http://localhost:8084
     ports:
       - "8000:8000"
   
