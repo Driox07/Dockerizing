@@ -1,0 +1,90 @@
+version: '3.8'
+name: oversound
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "12345"
+      POSTGRES_DB: postgres
+
+  fnd:
+    image: acroversound2025.azurecr.io/fnd:latest
+    depends_on:
+      - syu
+      - tya
+      - tpp
+      - pt
+      - rye
+      - db
+    environment:
+      SERVER_IP: 0.0.0.0
+      SERVER_PORT: 8000
+      HOST_FND: http://fnd.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      HOST_SYU: http://syu.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      HOST_TYA: http://tya.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      HOST_TPP: http://tpp.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      HOST_PT:  http://pt.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      HOST_RYE: http://rye.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+  
+  syu:
+    image: acroversound2025.azurecr.io/syu:latest
+    environment:
+      SERVER_ADDRESS: 0.0.0.0
+      SERVER_PORT: 8080
+      TYA_HOST: http://tya.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_PWD: "12345"
+      DB_NAME: "syu"
+      DB_USER: "syu_admin"
+
+  tya:
+    image: acroversound2025.azurecr.io/tya:latest
+    environment:
+      HOST_TYA_IP: +
+      HOST_TYA_PORT: 8081
+      HOST_SYU: http://syu.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_PWD: "12345"
+      DB_NAME: "tya"
+      DB_USER: "tya_admin"
+  
+  tpp:
+    image: acroversound2025.azurecr.io/tpp:latest
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8082
+      HOST_SYU: http://syu.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      HOST_TYA: http://tya.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_PWD: "12345"
+      DB_NAME: "tpp"
+      DB_USER: "tpp_admin"
+  
+  pt:
+    image: acroversound2025.azurecr.io/pt:latest
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8083
+      HOST_SYU: http://syu.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_PWD: "12345"
+      DB_NAME: "pt"
+      DB_USER: "pt_admin"
+  
+  rye:
+    image: acroversound2025.azurecr.io/rye:latest
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8084
+      HOST_SYU: http://syu.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      HOST_TYA: http://tya.thankfulwave-2418a0c6.spaincentral.azurecontainerapps.io
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_PWD: "12345"
+      DB_NAME: "rye"
+      DB_USER: "rye_admin"
