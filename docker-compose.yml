@@ -62,7 +62,7 @@ services:
     environment:
       HOST_TYA_IP: +
       HOST_TYA_PORT: 8081
-      HOST_SYU: localhost
+      HOST_SYU: http://localhost:8080
       DB_HOST: localhost
       DB_PORT: 5432
       DB_PWD: "12345"
@@ -80,8 +80,8 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: 8082
-      HOST_SYU: localhost
-      HOST_TYA: localhost
+      HOST_SYU: http://localhost:8080
+      HOST_TYA: http://localhost:8081
       DB_HOST: localhost
       DB_PORT: 5432
       DB_PWD: "12345"
@@ -97,6 +97,7 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: 8083
+      HOST_SYU: http://localhost:8080
       DB_HOST: localhost
       DB_PORT: 5432
       DB_PWD: "12345"
@@ -112,6 +113,8 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: 8084
+      HOST_SYU: http://localhost:8080
+      HOST_TYA: http://localhost:8081
       DB_HOST: localhost
       DB_PORT: 5432
       DB_PWD: "12345"
