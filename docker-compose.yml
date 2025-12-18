@@ -4,17 +4,17 @@ name: oversound
 services:
   db:
     image: postgres:16
+    network_mode: "host"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: "12345"
       POSTGRES_DB: postgres
-    ports:
-      - "5433:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
 
   fnd:
     image: fnd
+    network_mode: "host"
     build:
       context: ./FND
       dockerfile: Dockerfile
@@ -34,21 +34,18 @@ services:
       HOST_TPP: http://localhost:8082
       HOST_PT:  http://localhost:8083
       HOST_RYE: http://localhost:8084
-    ports:
-      - "8000:8000"
   
   syu:
     image: syu
+    network_mode: "host"
     build:
       context: ./SYU
       dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
     environment:
       SERVER_ADDRESS: 0.0.0.0
       SERVER_PORT: 8080
       TYA_HOST: http://localhost:8081
-      DB_HOST: 10.1.1.1
+      DB_HOST: localhost
       DB_PORT: 5432
       DB_PWD: "12345"
       DB_NAME: "syu"
@@ -58,16 +55,15 @@ services:
 
   tya:
     image: tya
+    network_mode: "host"
     build:
       context: ./TYA
       dockerfile: Dockerfile
-    ports:
-      - "8081:8081"
     environment:
       HOST_TYA_IP: +
       HOST_TYA_PORT: 8081
       HOST_SYU: localhost
-      DB_HOST: 10.1.1.1
+      DB_HOST: localhost
       DB_PORT: 5432
       DB_PWD: "12345"
       DB_NAME: "tya"
@@ -77,17 +73,16 @@ services:
   
   tpp:
     image: tpp
+    network_mode: "host"
     build:
       context: ./TPP
       dockerfile: Dockerfile
-    ports:
-      - "8082:8082"
     environment:
       HOST: 0.0.0.0
       PORT: 8082
       HOST_SYU: localhost
       HOST_TYA: localhost
-      DB_HOST: 10.1.1.1
+      DB_HOST: localhost
       DB_PORT: 5432
       DB_PWD: "12345"
       DB_NAME: "tpp"
@@ -95,15 +90,14 @@ services:
   
   pt:
     image: pt
+    network_mode: "host"
     build:
       context: ./PT
       dockerfile: Dockerfile
-    ports:
-      - "8083:8083"
     environment:
       HOST: 0.0.0.0
       PORT: 8083
-      DB_HOST: 10.1.1.1
+      DB_HOST: localhost
       DB_PORT: 5432
       DB_PWD: "12345"
       DB_NAME: "pt"
@@ -111,15 +105,14 @@ services:
   
   rye:
     image: rye
+    network_mode: "host"
     build:
       context: ./RYE
       dockerfile: Dockerfile
-    ports:
-      - "8084:8084"
     environment:
       HOST: 0.0.0.0
       PORT: 8084
-      DB_HOST: 10.1.1.1
+      DB_HOST: localhost
       DB_PORT: 5432
       DB_PWD: "12345"
       DB_NAME: "rye"
