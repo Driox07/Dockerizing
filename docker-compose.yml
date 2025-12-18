@@ -1,0 +1,131 @@
+version: '3.8'
+name: oversound
+# Definición de los servicios
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "12345"
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  fnd:
+    image: fnd
+    build:
+      context: ./FND
+      dockerfile: Dockerfile
+    depends_on:
+      - syu
+      - tya
+      - tpp
+      - pt
+      - rye
+      - db
+    environment:
+      SERVER_IP: 0.0.0.0
+      SERVER_PORT: 8000
+      HOST_FND: http://localhost:8000
+      HOST_SYU: http://localhost:8081
+      HOST_TYA: http://localhost:8082
+      HOST_TPP: http://localhost:8083
+      HOST_PT:  http://localhost:8084
+      HOST_RYE: http://localhost:8085
+    ports:
+      - "8000:8000"
+  
+  syu:
+    image: syu
+    build:
+      context: ./SYU
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_ADDRESS: 0.0.0.0
+      SERVER_PORT: 8080
+      TYA_HOST: http://localhost:8081
+      DB_HOST: 10.1.1.1
+      DB_PORT: 5432
+      DB_PWD: "12345"
+      DB_NAME: "syu"
+      DB_USER: "syu_admin"
+    volumes:
+      - syu_data:/syu/src/main/resources/static/pfp
+
+  tya:
+    image: tya
+    build:
+      context: ./TYA
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      HOST_TYA_IP: +
+      HOST_TYA_PORT: 8081
+      HOST_SYU: localhost
+      DB_HOST: 10.1.1.1
+      DB_PORT: 5432
+      DB_PWD: "12345"
+      DB_NAME: "tya"
+      DB_USER: "tya_admin"
+    volumes:
+      - tya_data:/tya/static
+  
+  tpp:
+    image: tpp
+    build:
+      context: ./TPP
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8082
+      HOST_SYU: localhost
+      HOST_TYA: localhost
+      DB_HOST: 10.1.1.1
+      DB_PORT: 5432
+      DB_PWD: "12345"
+      DB_NAME: "tpp"
+      DB_USER: "tpp_admin"
+  
+  pt:
+    image: pt
+    build:
+      context: ./PT
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8083
+      DB_HOST: 10.1.1.1
+      DB_PORT: 5432
+      DB_PWD: "12345"
+      DB_NAME: "pt"
+      DB_USER: "pt_admin"
+  
+  rye:
+    image: rye
+    build:
+      context: ./RYE
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8084
+      DB_HOST: 10.1.1.1
+      DB_PORT: 5432
+      DB_PWD: "12345"
+      DB_NAME: "rye"
+      DB_USER: "rye_admin"
+
+volumes:
+  syu_data:
+  tya_data:
+  db_data:
